@@ -1,4 +1,8 @@
-<head>
+<!-- <head>
+  <script src="moment.js"></script>
+    <script>
+      moment().format();
+    </script>
   <title>bloclist</title>
 </head>
 
@@ -37,39 +41,11 @@
  
     <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
  
-    <span class="text">{{text}}</span>
+    <span class="text">{{text}} {{createdAt}}</span>
   </li>
 </template>
 
-<template name="myTabs">
+<!- Iron.router use a template for active, expired, and completed instead of using these tabs -->
 
-  <!-- Use `name` to add a custom class to the outer container -->
-  {{#basicTabs name="tabContainer" tabs=tabs}}
-    <!--
-      There are two ways to define content for your tabs:
 
-      1. Wrap each tabbed section in a blank `<div></div>`.
-         Sections must correspond with the order of the tabs you specified.
-
-      2. Wrap each tabbed section in the provided block helper (RECOMMENDED!).
-         `{{#tabContent slug="nameOfSlug"}} ... {{/tabContent}}`
-         These can be defined in any order you like.
-    -->
-    {{#tabContent slug="active"}}
-      <h2>Active</h2>
-
-    {{/tabContent}}
-
-    {{#tabContent slug="expired"}}
-      <h2>Expired</h2>
-
-    {{/tabContent}}
-
-    {{#tabContent slug="completed"}}
-      <h2>Completed</h2>
-
-    {{/tabContent}}
-
-  {{/basicTabs}}
-
-</template>
+<!-- </template>  --> 

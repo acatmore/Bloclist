@@ -1,0 +1,12 @@
+<!-- client/expired.html -->
+<template name="expired">
+  <div class="container">
+    {{>navigation}}
+     <ul>
+      {{#each expiredTasks}}
+        {{>task}}
+      {{/each}}
+    </ul>
+
+  </div>
+</template>

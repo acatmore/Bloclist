@@ -1,0 +1,35 @@
+<!-- client/active.html -->
+<template name="active">
+
+  <div class="container">
+  {{>navigation}}
+
+ <!--    <label class="hide-completed">
+      <input type="checkbox" checked="{{hideCompleted}}" />
+        Hide Completed Tasks
+    </label> -->
+
+    <ul>
+    {{#each seriousTasks}}
+        {{>task}}
+    {{/each}}
+
+    <hr>
+
+    {{#each pressingTasks}}
+        {{>task}}
+    {{/each}}
+
+    <hr>
+
+    {{#each routineTasks}}
+        {{>task}}
+    {{/each}}
+
+<!--       {{#each tasks}}
+        {{>task}}
+      {{/each}} -->
+    </ul>
+  </div>
+</template>
+

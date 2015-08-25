@@ -1,0 +1,13 @@
+<!-- client/completed.html -->
+<template name="completed">
+
+  <div class="container">
+  {{>navigation}}
+
+    <ul>
+      {{#each completedTasks}}
+        {{>task}}
+      {{/each}}
+    </ul>
+  </div>
+</template>

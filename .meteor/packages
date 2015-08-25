@@ -8,3 +8,5 @@ meteor-platform
 autopublish
 insecure
 templates:tabs
+iron:router
+momentjs:moment
