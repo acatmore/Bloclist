@@ -3,36 +3,12 @@ Tasks = new Mongo.Collection("tasks");
 if (Meteor.isClient) {
 
   Template.active.helpers({
-    // tasks: function () {
-
-    //   if (Session.get("hideCompleted")) {
-    //     // If hide completed is checked, filter tasks
-    //     return Tasks.find({checked: {$ne: true}}, {sort: {createdAt: -1}});
-
-    //   } else {
-    //     // Otherwise, return all of the tasks
-    //     return Tasks.find({}, {sort: {createdAt: -1}});
-    //     //add priority levels, use cursor to sort
-    //   }
-    // },
-
-    // taskHasExpired: function () {
-    //   if (moment().unix === Tasks.find({taskExpired: timeEnd})) {
-    //     Tasks.update(this._id, {
-    //       $set: {expired: true}
-    //     });
-    //   }
-    // },
-
-    // taskIsCompleted: function () {
-    //   if (checked: true)
-    // },
 
     //put this into a string so we only have one entry "priority"
     // _id most common way to find something
     // could make an argument with one parameter, take the string as an argument for priority
     seriousTasks: function () {
-        return Tasks.find({priority: 'serious'}, {sort: {createdAt: +1}});
+        return Tasks.find({priority: 'serious'}, {sort: {createdAt: +1}}, {checked: {$ne: true}});
     },
     pressingTasks: function () {
         return Tasks.find({priority: 'pressing'}, {sort: {createdAt: +1}});
@@ -54,12 +30,6 @@ if (Meteor.isClient) {
  });
 
 Template.expired.helpers({
-  // var time = moment().unix();
-  // var expired = Tasks.find({taskExpired: timeEnd})
-  // cursor (object) cannot be compared to a number
-  //look through mongoDB to do a comparator to its
-  // http://docs.mongodb.org/v3.0/reference/operator/query/gte/
-  //http://stackoverflow.com/questions/23073023/date-range-mongo-query-using-meteor-js
     expiredTasks: function() {
       var timeNow = moment().unix();
          return Tasks.find({ $and: [ {taskExpired: {$lt: timeNow}}, {checked: false} ] });
@@ -70,7 +40,7 @@ Template.expired.helpers({
 Template.completed.helpers({
   completedTasks: function() {
     return Tasks.find({checked: true});
-    // , {sort: timeCompleted}
+
 
      
   }
@@ -89,9 +59,10 @@ Template.completed.helpers({
 
       var priorityLevel = $('[name=priority]:checked').val();
       // maybe put it in as a date object
-      var currentTime = moment().unix(); 
+      var currentTime = moment().format("dddd, MMMM Do YYYY, h:mm a"); 
+      // var endDisplay = timeStart.diff(timeEnd, 'days');
       var timeStart = moment().unix();
-      var timeEnd = moment().add(1, 'm').unix();
+      var timeEnd = moment().add(7, 'd').unix();
         // console.log(timeStart);
         // console.log(timeEnd);
 
@@ -99,6 +70,7 @@ Template.completed.helpers({
       var id = Tasks.insert({
         text: text,
         createdAt: currentTime, // current time (format in correct date)
+        // endsAt: endDisplay,
         taskStarted: timeStart,
         taskExpired: timeEnd,
         priority: priorityLevel
@@ -109,24 +81,26 @@ Template.completed.helpers({
     },
 
 
-    "change .hide-completed input": function (event) {
-      Session.set("hideCompleted", event.target.checked);
-    },
+    // "change .hide-completed input": function (event) {
+    //   Session.set("hideCompleted", event.target.checked);
+    // }
   });
 
   Template.task.events({
     "click .toggle-checked": function () {
-      var moment = moment.unix();
+      // var moment = moment.unix();
       // Set the checked property to the opposite of its current value
       Tasks.update(this._id, {
-        $set: {checked: ! this.checked}
-        
-      // },
-      //   {
-      //     $set: {timeCompleted: moment}
-      });
+        $set: {checked: ! this.checked}         
+
+      }),
+
+      Tasks.update(this._id, {
+        $set: {priority: ''}
+      })
     },
     "click .delete": function () {
+      Tasks.remove(this._id);
     }
   });
 }
@@ -135,7 +109,6 @@ Template.completed.helpers({
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
     // look into autopublish, it is publishing everything (maybe insecure as well)
     // will want to remove these at some point
   });
