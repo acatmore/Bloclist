@@ -1,4 +1,4 @@
-# Bloclist
+# Acatmore Tasks
 
 A simple task list that allows users to set a priority of their tasks. There are multiple views to check completed tasks and expired tasks. Tasks automatically expire a week after they are done.
 
